@@ -42,7 +42,17 @@ public class MockAdapter extends RecyclerView.Adapter<MockHolder> {
         return mMockList.size(); // returning size of MockList
     }
 
-    public void addData(List<Mock> mocks){
+    public void addData(List<Mock> mocks, boolean refresh){
+        //Но иногда нам нужно и добавлять данные, и обновлять их. Как же поступить в этом случае?
+        // Самый простой и распространенный способ — это в addData, помимо самих новых данных,
+        // передавать еще и булево значение: boolean refresh. Соответственно, если мы вызываем в
+        // месте с данными еще и true, то обновляем наш список. Очищаем список, добавляем новые данные.
+        // Если же в addData передать false, то будет только добавление данных.
+        if(refresh){
+            // перед добавлением новых данных, нового List<Mock>, нужно очистить старый
+            mMockList.clear();
+        }
+
         mMockList.addAll(mocks);
         // Дальше, для того, чтобы система знала, что вообще-то у меня адаптер обновился, неплохо было бы вызвать notify Data set Changed.
         notifyDataSetChanged();

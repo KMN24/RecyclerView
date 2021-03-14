@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RecyclerView</string>
+    <string name="error_text">Something went wrong. Try it again!</string>
 </resources>
