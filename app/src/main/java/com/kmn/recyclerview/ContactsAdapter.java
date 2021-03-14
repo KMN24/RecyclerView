@@ -16,6 +16,7 @@ import com.kmn.recyclerview.mock.MockHolder;
 public class ContactsAdapter extends RecyclerView.Adapter<MockHolder> {
 
     private Cursor mCursor;
+    private OnItemClickListener mListener;
 
     @NonNull
     @Override
@@ -58,6 +59,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<MockHolder> {
             Перейду к приложениям. Открою наше приложение, щелкну по permition и сам вручную включу разрешение и запущу
             приложение теперь.
              */
+
+            holder.setListener(mListener);
         }
     }
 
@@ -83,6 +86,27 @@ public class ContactsAdapter extends RecyclerView.Adapter<MockHolder> {
             notifyDataSetChanged();
         }
 
+    }
+
+    public void setListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(String id);
+        /*
+        В этом интерфейсе зададим метод, void, onItemСlic;. Ну, логика какая, при нажатии на элемент списка вызывается
+        метод onItemClick, который определен в этом интерфейсе. Получается, во-первых, этот интерфейс какая-то часть нашего
+        кода какой-то элемент, какой-то компонент должен во-первых, реализовывать, во-вторых, этот интерфейс, реализация
+        этого интерфейса должна быть передана в holder, чтобы именно конкретно нажатый элемент мог быть обработан в месте
+        её реализации. Давайте сначала определимся, кто будет реализовывать этот интерфейс. Вообще желательно, чтобы реализацией
+        занималась именно activity, потому что чем выше реализация, тем лучше, потому что реализовав интерфейс в activity,
+        я могу менять логику впоследствии не затрагивая остальные элементы. Ну примерно, например, я могу нажать на кнопку
+        и запустить звонок. Нажать на элемент списка, запустить звонок. Либо я могу нажать на элемент списка и поменять один
+        фрагмент на другой. Если реализация интерфейса будет ниже во фрагменте, либо в адаптере, либо в холдере, то при изменении
+         логики мне придётся поменять очень много зависимых от неё от этой логики классов, поэтому реализацией интерфейса
+         займётся activity.
+         */
     }
 
 }

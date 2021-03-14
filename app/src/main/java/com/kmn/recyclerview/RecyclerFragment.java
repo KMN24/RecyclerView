@@ -1,5 +1,6 @@
 package com.kmn.recyclerview;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -31,8 +32,19 @@ public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnR
     private View mErrorView;
     private Random mRandom = new Random();
 
+    private ContactsAdapter.OnItemClickListener mListener;
+
+
     public static RecyclerFragment newInstance() {
         return new RecyclerFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof ContactsAdapter.OnItemClickListener){
+            mListener = (ContactsAdapter.OnItemClickListener) context;
+        }
     }
 
     @Nullable
@@ -47,6 +59,7 @@ public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnR
         mSwipeRefreshLayout = view.findViewById(R.id.refresher);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mErrorView = view.findViewById(R.id.error_view);
+
     }
 
     @Override
@@ -57,6 +70,8 @@ public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setAdapter(mContactsAdapter);
         //Мы добавили adapter к recycler-у, но ещё не вызвали метод, который добавляет данные в adapter.  Для этого
         //mMockAdapter.addData(MockGenerator.generator(20));
+
+        mContactsAdapter.setListener(mListener);
     }
 
     @Override
@@ -136,5 +151,11 @@ public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
     }
 }
