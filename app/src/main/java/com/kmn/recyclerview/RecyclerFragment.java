@@ -71,7 +71,9 @@ public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnR
         //Мы добавили adapter к recycler-у, но ещё не вызвали метод, который добавляет данные в adapter.  Для этого
         //mMockAdapter.addData(MockGenerator.generator(20));
 
+        mRecyclerView.addItemDecoration(new CardDecoration());
         mContactsAdapter.setListener(mListener);
+
     }
 
     @Override
